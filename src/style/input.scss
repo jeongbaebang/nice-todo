@@ -3,8 +3,6 @@
     margin: 0 50px; // 임시
     padding: 16px;
     height: 54px;
-    border-radius: 8px;
-
     background-color: var(--gray-300);
   }
 
@@ -23,11 +21,12 @@
     }
   }
 
-  &:focus-within {
-    border-color: var(--purple-dark);
-  }
-
   &[data-type='creation'] {
+    border-radius: 8px;
     border: 2px solid var(--background-color);
+
+    &:focus-within {
+      border-color: var(--purple-dark);
+    }
   }
 }
