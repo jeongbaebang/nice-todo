@@ -53,3 +53,23 @@
     border: 1px solid var(--gray-400);
   }
 }
+
+.item-list__empty__container {
+  display: flex;
+  border-top: 1px solid var(--gray-400);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 64px;
+
+  span > img {
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    color: var(--gray-500);
+  }
+}

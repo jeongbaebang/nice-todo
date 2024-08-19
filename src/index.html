@@ -8,6 +8,10 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
+    />
     <link rel="stylesheet" href="./style/common.scss" />
     <link rel="stylesheet" href="./style/input.scss" />
     <link rel="stylesheet" href="./style/checkbox.scss" />
@@ -48,52 +52,10 @@
             </div>
           </div>
           <!-- list -->
-          <div class="item-list__container">
-            <!-- Item -->
-            <div class="task__component">
-              <div class="checkbox__component">
-                <label>
-                  <input type="checkbox" />
-                </label>
-              </div>
-              <div class="input__component">
-                <input type="text" placeholder="텍스트를 입력하세요" />
-              </div>
-              <button class="button__component" data-type="deletion">
-                <span class="material-symbols-outlined"> delete </span>
-              </button>
-            </div>
-            <!-- Item-end -->
-            <!-- Item -->
-            <div class="task__component">
-              <div class="checkbox__component">
-                <label>
-                  <input type="checkbox" />
-                </label>
-              </div>
-              <div class="input__component">
-                <input type="text" placeholder="텍스트를 입력하세요" />
-              </div>
-              <button class="button__component" data-type="deletion">
-                <span class="material-symbols-outlined"> delete </span>
-              </button>
-            </div>
-            <!-- Item-end -->
-            <!-- Item -->
-            <div class="task__component">
-              <div class="checkbox__component">
-                <label>
-                  <input type="checkbox" />
-                </label>
-              </div>
-              <div class="input__component">
-                <input type="text" placeholder="텍스트를 입력하세요" />
-              </div>
-              <button class="button__component" data-type="deletion">
-                <span class="material-symbols-outlined"> delete </span>
-              </button>
-            </div>
-            <!-- Item-end -->
+          <div class="item-list__empty__container">
+            <span><img src="/assets/Clipboard.svg" alt="logo" /></span>
+            <h3>아직 등록된 할 일이 없습니다!</h3>
+            <h3>작업을 생성하고 할 일 목록을 정리하세요 😋</h3>
           </div>
         </section>
       </main>
