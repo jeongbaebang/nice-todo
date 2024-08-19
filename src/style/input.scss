@@ -1,0 +1,33 @@
+.input__component {
+  & {
+    margin: 0 50px; // 임시
+    padding: 16px;
+    height: 54px;
+    border-radius: 8px;
+
+    background-color: var(--gray-300);
+  }
+
+  & input {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    color: var(--text-color);
+
+    &::placeholder {
+      color: var(--gray-500);
+    }
+  }
+
+  &:focus-within {
+    border-color: var(--purple-dark);
+  }
+
+  &[data-type='creation'] {
+    border: 2px solid var(--background-color);
+  }
+}

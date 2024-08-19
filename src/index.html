@@ -3,13 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="normalize.css" />
-    <link rel="stylesheet" href="common.scss" />
+    <link rel="stylesheet" href="./style/normalize.css" />
+    <link rel="stylesheet" href="./style/common.scss" />
+    <link rel="stylesheet" href="./style/input.scss" />
     <script type="module" src="app.js"></script>
     <title>Document</title>
   </head>
   <body>
     <h1>Hello world</h1>
-    <button id="theme-toggle">Toggle Theme</button>
+    <button id="theme-toggle">Toggle Theme</button><br />
+    <div class="input__component" data-type="creation">
+      <input type="text" placeholder="텍스트를 입력하세요" />
+    </div>
   </body>
 </html>
