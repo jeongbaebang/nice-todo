@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="./style/input.scss" />
     <link rel="stylesheet" href="./style/checkbox.scss" />
     <link rel="stylesheet" href="./style/button.scss" />
+    <link rel="stylesheet" href="./style/task.scss" />
     <script type="module" src="app.js"></script>
     <title>Document</title>
   </head>
@@ -36,5 +37,19 @@
         <span class="material-symbols-outlined"> add_circle </span>
       </div>
     </button>
+
+    <div class="task__component">
+      <div class="checkbox__component">
+        <label>
+          <input type="checkbox" />
+        </label>
+      </div>
+      <div class="input__component">
+        <input type="text" placeholder="텍스트를 입력하세요" />
+      </div>
+      <button class="button__component" data-type="deletion">
+        <span class="material-symbols-outlined"> delete </span>
+      </button>
+    </div>
   </body>
 </html>

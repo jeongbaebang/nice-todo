@@ -1,0 +1,9 @@
+.task__component {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding: 0 16px;
+  gap: 12px;
+  background-color: var(--gray-300);
+}
