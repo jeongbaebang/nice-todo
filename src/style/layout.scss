@@ -53,43 +53,6 @@ body {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-
-      & > div {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-
-        h3 {
-          font-weight: bold;
-        }
-      }
-
-      & .text {
-        font-size: 14px;
-      }
-
-      & .count {
-        color: var(--gray-600);
-        font-size: 12px;
-        line-height: 14px;
-        background-color: var(--gray-400);
-        padding: 3px;
-        border-radius: 8px;
-      }
-
-      & .item-count__total {
-        .text {
-          color: var(--blue-dark);
-        }
-      }
-
-      & .item-count__done {
-        .text {
-          color: var(--purple-dark);
-        }
-      }
     }
 
     @media (max-width: 550px) {
