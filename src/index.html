@@ -13,43 +13,30 @@
     <link rel="stylesheet" href="./style/checkbox.scss" />
     <link rel="stylesheet" href="./style/button.scss" />
     <link rel="stylesheet" href="./style/task.scss" />
+    <link rel="stylesheet" href="./style/layout.scss" />
     <script type="module" src="app.js"></script>
     <title>Document</title>
   </head>
   <body>
-    <h1>Hello world</h1>
-    <button id="theme-toggle">Toggle Theme</button><br />
-    <div class="input__component" data-type="creation">
-      <input type="text" placeholder="텍스트를 입력하세요" />
-    </div>
-    <div class="checkbox__component">
-      <label>
-        <input type="checkbox" />
-      </label>
-    </div>
-    <button class="button__component" data-type="deletion">
-      <span class="material-symbols-outlined"> delete </span>
-    </button>
-
-    <button class="button__component" data-type="creation">
-      <div class="flex-item">
-        <span class="text">Add</span>
-        <span class="material-symbols-outlined"> add_circle </span>
-      </div>
-    </button>
-
-    <div class="task__component">
-      <div class="checkbox__component">
-        <label>
-          <input type="checkbox" />
-        </label>
-      </div>
-      <div class="input__component">
-        <input type="text" placeholder="텍스트를 입력하세요" />
-      </div>
-      <button class="button__component" data-type="deletion">
-        <span class="material-symbols-outlined"> delete </span>
-      </button>
+    <!-- 레이아웃 구성 -->
+    <div class="container">
+      <header><img src="/assets/Logo.svg" alt="logo" /></header>
+      <main>
+        <!-- creation -->
+        <section aria-labelledby="todo-creation">
+          <form id="todo-form">
+            <div class="input__component" data-type="creation">
+              <input type="text" placeholder="텍스트를 입력하세요" />
+            </div>
+            <button class="button__component" data-type="creation">
+              <div class="flex-item">
+                <span class="text">Add</span>
+                <span class="material-symbols-outlined"> add_circle </span>
+              </div>
+            </button>
+          </form>
+        </section>
+      </main>
     </div>
   </body>
 </html>
