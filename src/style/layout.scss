@@ -21,6 +21,7 @@ body {
     align-items: center;
     width: 100%;
     height: 200px;
+    min-height: 200px;
     background-color: var(--background-color);
 
     img {
@@ -33,9 +34,8 @@ body {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    position: relative;
-    top: -29px; // 디자인 스타일 (중간 라인)
     gap: 65px;
+    background-color: var(--gray-200);
 
     & section {
       width: 100%;
@@ -47,6 +47,8 @@ body {
       flex-direction: row;
       align-items: center;
       gap: 8px;
+      position: relative;
+      top: -29px; // 디자인 스타일 (중간 라인)
     }
 
     section[aria-labelledby='todo-list'] {
