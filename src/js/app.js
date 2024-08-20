@@ -20,6 +20,22 @@ class TodoApp {
     }
   }
 
+  toggleComplete(id) {
+    if (!id) {
+      throw new Error('You must provide a valid ID.');
+    }
+
+    const item = this.todoItems.find((item) => item.id === id);
+
+    if (item) {
+      item.completed = !item.completed; // 상태 업데이트
+      const listItem = document.querySelector(
+        `.task__component[data-key="${id}"]`
+      );
+      listItem.classList.toggle('done', item.completed);
+    }
+  }
+
   addItem(value) {
     if (typeof value !== 'string' || value === '') {
       throw new Error('Make sure you pass the correct string.');
@@ -40,6 +56,12 @@ class TodoApp {
     const template = document.createElement('template');
     template.innerHTML = itemHTML.trim();
     const newItem = template.content.firstChild;
+
+    newItem
+      .querySelector('input[type="checkbox"]')
+      .addEventListener('change', () => {
+        this.toggleComplete(item.id);
+      });
 
     newItem
       .querySelector('.button__component[data-type="deletion"]')
