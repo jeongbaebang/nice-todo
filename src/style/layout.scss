@@ -52,6 +52,12 @@ body {
     }
 
     section[aria-labelledby='todo-list'] {
+      .item-management__container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
       .item-count__container {
         display: flex;
         flex-direction: row;
