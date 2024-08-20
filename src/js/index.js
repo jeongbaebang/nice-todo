@@ -1,9 +1,8 @@
 import { TodoApp } from './todo';
 import { FormHandler } from './form';
 import { Theme } from './theme';
-import { Trash } from './trash';
 
-const todo = new TodoApp(Trash);
+const todo = new TodoApp();
 
 new Theme();
 new FormHandler({ onSubmit: todo.addItem.bind(todo) });

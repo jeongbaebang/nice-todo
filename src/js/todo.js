@@ -1,4 +1,4 @@
-import { FormHandler } from './form';
+import { Trash } from './trash';
 import { $ } from './utils';
 
 export class TodoApp {
@@ -12,11 +12,11 @@ export class TodoApp {
    */
   todoItems = [];
 
-  constructor(TrashSystem) {
-    this.trash = new TrashSystem();
+  constructor() {
+    this.trash = new Trash();
     this.container = $('.item-list__container');
     this.#loadItemsFromStorage();
-    this.#initRenderItem();
+    this.#renderItemList();
     this.#initTrashButtonListeners();
   }
 
@@ -50,12 +50,29 @@ export class TodoApp {
         : { total: '삭제된 할 일 목록', done: '삭제처리된 완료 목록' };
     $('.item-count__total .text').textContent = textType.total;
     $('.item-count__done .text').textContent = textType.done;
+    // 아이템 리스트 보여주기
+    this.#clearItemList();
+    this.#renderItemList();
+    this.updateItemLength();
   }
 
-  #initRenderItem() {
-    if (this.todoItems.length > 0) {
+  #clearItemList() {
+    const todoListContainer = $('.item-list__container');
+
+    if (todoListContainer) {
+      todoListContainer.innerHTML = ''; // 컨테이너의 내용을 모두 제거
+    }
+  }
+
+  #renderItemList() {
+    const items =
+      this.todoStatus === 'todo' ? this.todoItems : this.trash.trashItems;
+
+    if (items.length > 0) {
       this.#toggleEmptyListState(false);
-      this.todoItems.forEach((item) => this.#renderItem(item, 'beforeend'));
+      items.forEach((item) =>
+        this.#renderItem(item, 'beforeend', this.todoStatus)
+      );
     }
   }
 
@@ -78,9 +95,12 @@ export class TodoApp {
       '.item-count__done > .count'
     );
 
-    const totalLength = this.todoItems.length;
-    const todoLength = this.todoItems.filter((item) => !item.completed).length;
-    const doneLength = this.todoItems.filter((item) => item.completed).length;
+    const list =
+      this.todoStatus === 'todo' ? this.todoItems : this.trash.trashItems;
+
+    const totalLength = list.length;
+    const todoLength = list.filter((item) => !item.completed).length;
+    const doneLength = list.filter((item) => item.completed).length;
 
     todoLengthText.textContent = todoLength;
     doneLengthText.textContent = `${doneLength}/${totalLength}`;
@@ -151,9 +171,10 @@ export class TodoApp {
    * @param {number} item.text
    * @param {number} item.completed
    * @param {"afterbegin" | "afterend" | "beforebegin" | "beforeend"} position
+   * @param {"todo" | "trash"} type
    */
-  #renderItem(item, position = 'afterbegin') {
-    const itemHTML = this.#generateItem(item);
+  #renderItem(item, position = 'afterbegin', type = 'todo') {
+    const itemHTML = this.#generateItem(item, type);
     const template = document.createElement('template');
     template.innerHTML = itemHTML.trim();
     const newItem = template.content.firstChild;
@@ -172,6 +193,7 @@ export class TodoApp {
         this.toggleComplete(item.id);
       });
 
+    // TODO:  상태에 따른 처리 다르게
     newItem
       .querySelector('.button__component[data-type="deletion"]')
       .addEventListener('click', () => {
@@ -199,8 +221,9 @@ export class TodoApp {
    * @param {number} item.id
    * @param {number} item.text
    * @param {number} item.completed
+   * @param {"todo" | "trash"} type
    */
-  #generateItem(item) {
+  #generateItem(item, type = 'todo') {
     if (!item?.id || !item?.text) {
       throw new Error('You must provide valid attributes.');
     }
@@ -218,7 +241,9 @@ export class TodoApp {
           <input type="text" disabled placeholder="텍스트를 입력하세요" value="${text}"/>
         </div>
         <button class="button__component" data-type="deletion">
-          <span class="material-symbols-outlined"> delete </span>
+          <span class="material-symbols-outlined">${
+            type === 'todo' ? ' delete ' : 'redo'
+          }</span>
         </button>
       </div>
     `;
