@@ -53,7 +53,7 @@ export class TodoApp {
     // 아이템 리스트 보여주기
     this.#clearItemList();
     this.#renderItemList();
-    this.updateItemLength();
+    this.#updateItemLength();
   }
 
   #clearItemList() {
@@ -74,7 +74,7 @@ export class TodoApp {
       );
     }
 
-    this.updateItemLength();
+    this.#updateItemLength();
   }
 
   #loadItemsFromStorage() {
@@ -87,7 +87,7 @@ export class TodoApp {
     localStorage.setItem('todoItems', JSON.stringify(this.todoItems));
   }
 
-  updateItemLength() {
+  #updateItemLength() {
     const container = $('.item-count__container');
     const todoLengthText = container.querySelector(
       '.item-count__total > .count'
@@ -123,7 +123,7 @@ export class TodoApp {
 
     if (target) {
       target.remove();
-      this.updateItemLength();
+      this.#updateItemLength();
       this.#saveItemsToStorage();
     }
   }
@@ -142,7 +142,7 @@ export class TodoApp {
       );
 
       target.classList.toggle('done', item.completed);
-      this.updateItemLength();
+      this.#updateItemLength();
       this.#saveItemsToStorage();
     }
   }
@@ -160,7 +160,7 @@ export class TodoApp {
 
     this.todoItems.unshift(item);
     this.#renderItem(item);
-    this.updateItemLength();
+    this.#updateItemLength();
     this.#saveItemsToStorage();
   }
 
