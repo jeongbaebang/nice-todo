@@ -2,12 +2,31 @@ import { FormHandler } from './form';
 import { $ } from './utils';
 
 class TodoApp {
+  /**
+   * @type {{ id: number, text: string, completed: boolean }[]}
+   */
+  todoItems;
+
   constructor() {
-    /**
-     * @type {{ id: number, text: string, completed: boolean }[]}
-     */
-    this.todoItems = [];
     this.container = $('.item-list__container');
+    this.#loadItemsFromStorage();
+    this.#initRenderItem();
+  }
+
+  #initRenderItem() {
+    if (this.todoItems.length > 0) {
+      this.#toggleEmptyListState(false);
+      this.todoItems.forEach((item) => this.#renderItem(item, 'beforeend'));
+    }
+  }
+
+  #loadItemsFromStorage() {
+    const storedItems = JSON.parse(localStorage.getItem('todoItems')) || [];
+    this.todoItems = storedItems;
+  }
+
+  #saveItemsToStorage() {
+    localStorage.setItem('todoItems', JSON.stringify(this.todoItems));
   }
 
   updateItemLength() {
@@ -40,6 +59,7 @@ class TodoApp {
     if (target) {
       target.remove();
       this.updateItemLength();
+      this.#saveItemsToStorage();
     }
   }
 
@@ -58,6 +78,7 @@ class TodoApp {
 
       target.classList.toggle('done', item.completed);
       this.updateItemLength();
+      this.#saveItemsToStorage();
     }
   }
 
@@ -75,9 +96,17 @@ class TodoApp {
     this.todoItems.unshift(item);
     this.#renderItem(item);
     this.updateItemLength();
+    this.#saveItemsToStorage();
   }
 
-  #renderItem(item) {
+  /**
+   * @param {Object} item
+   * @param {number} item.id
+   * @param {number} item.text
+   * @param {number} item.completed
+   * @param {"afterbegin" | "afterend" | "beforebegin" | "beforeend"} position
+   */
+  #renderItem(item, position = 'afterbegin') {
     const itemHTML = this.#generateItem(item);
     const template = document.createElement('template');
     template.innerHTML = itemHTML.trim();
@@ -95,7 +124,7 @@ class TodoApp {
         this.removeItem(item.id);
       });
 
-    this.container.insertAdjacentElement('afterbegin', newItem);
+    this.container.insertAdjacentElement(position, newItem);
   }
 
   #toggleEmptyListState(isEmpty) {
@@ -116,7 +145,6 @@ class TodoApp {
    * @param {number} item.id
    * @param {number} item.text
    * @param {number} item.completed
-   * @returns
    */
   #generateItem(item) {
     if (!item?.id || !item?.text) {
