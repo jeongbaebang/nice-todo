@@ -7,6 +7,19 @@ class TodoApp {
     this.container = $('.item-list__container');
   }
 
+  removeItem(id) {
+    if (!id) {
+      throw new Error('You must provide a valid ID.');
+    }
+
+    this.todoItems = this.todoItems.filter((item) => item.id !== id);
+    const target = $(`.task__component[data-key="${id}"]`);
+
+    if (target) {
+      target.remove();
+    }
+  }
+
   addItem(value) {
     if (typeof value !== 'string' || value === '') {
       throw new Error('Make sure you pass the correct string.');
@@ -27,6 +40,12 @@ class TodoApp {
     const template = document.createElement('template');
     template.innerHTML = itemHTML.trim();
     const newItem = template.content.firstChild;
+
+    newItem
+      .querySelector('.button__component[data-type="deletion"]')
+      .addEventListener('click', () => {
+        this.removeItem(item.id);
+      });
 
     this.container.insertAdjacentElement('afterbegin', newItem);
   }
