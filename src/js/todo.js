@@ -53,6 +53,19 @@ export class TodoApp {
     // 아이템 리스트 보여주기
     this.#renderItemList();
     this.#updateItemLength();
+    // 빈 리스트 텍스트 수정
+    const emptyTextType =
+      status === 'todo'
+        ? {
+            text1: '아직 등록된 할 일이 없습니다!',
+            text2: '작업을 생성하고 할 일 목록을 정리하세요 😋',
+          }
+        : {
+            text1: '아직 삭제된 항목이 없습니다!',
+            text2: '새로운 작업을 만들고 삭제해 보세요 🥰',
+          };
+    $('.item-list__empty__container .text-1').textContent = emptyTextType.text1;
+    $('.item-list__empty__container .text-2').textContent = emptyTextType.text2;
   }
 
   #clearItemList() {

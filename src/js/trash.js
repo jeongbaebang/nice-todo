@@ -48,8 +48,4 @@ export class Trash {
       throw new Error('The specified item element was not found.');
     }
   }
-
-  onClickButton(handler) {
-    this.button.addEventListener('click', handler);
-  }
 }
