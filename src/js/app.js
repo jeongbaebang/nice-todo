@@ -28,11 +28,12 @@ class TodoApp {
     const item = this.todoItems.find((item) => item.id === id);
 
     if (item) {
-      item.completed = !item.completed; // 상태 업데이트
-      const listItem = document.querySelector(
+      item.completed = !item.completed;
+      const target = document.querySelector(
         `.task__component[data-key="${id}"]`
       );
-      listItem.classList.toggle('done', item.completed);
+
+      target.classList.toggle('done', item.completed);
     }
   }
 
