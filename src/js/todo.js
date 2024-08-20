@@ -3,12 +3,17 @@ import { $ } from './utils';
 
 export class TodoApp {
   /**
+   * @type {"todo" | "trash"}
+   */
+  todoStatus = 'todo';
+
+  /**
    * @type {{ id: number, text: string, completed: boolean }[]}
    */
   todoItems = [];
-  trashItems = [];
 
-  constructor() {
+  constructor(TrashSystem) {
+    this.trash = new TrashSystem();
     this.container = $('.item-list__container');
     this.#loadItemsFromStorage();
     this.#initRenderItem();
@@ -23,28 +28,12 @@ export class TodoApp {
 
   #loadItemsFromStorage() {
     const storedTodoItems = JSON.parse(localStorage.getItem('todoItems')) || [];
-    const storedTrashItems =
-      JSON.parse(localStorage.getItem('trashItems')) || [];
 
     this.todoItems = storedTodoItems;
-    this.trashItems = storedTrashItems;
   }
 
-  /**
-   * @param {"todoItems" | "trashItems"} type
-   * @param {{ id: number, text: string, completed: boolean }[]} payload
-   */
   #saveItemsToStorage(type = 'todoItems') {
-    const payload = type === 'todoItems' ? this.todoItems : this.trashItems;
-
-    localStorage.setItem(type, JSON.stringify(payload));
-  }
-
-  #moveItemToTrash(item) {
-    if (item) {
-      this.trashItems.unshift(item);
-      this.#saveItemsToStorage('trashItems');
-    }
+    localStorage.setItem('todoItems', JSON.stringify(this.todoItems));
   }
 
   updateItemLength() {
@@ -74,7 +63,7 @@ export class TodoApp {
     const index = this.todoItems.findIndex((item) => item.id === id);
 
     if (index !== -1) {
-      this.#moveItemToTrash(this.todoItems[index]);
+      this.trash.moveItemToTrash(this.todoItems[index]);
       this.todoItems.splice(index, 1);
     }
 
