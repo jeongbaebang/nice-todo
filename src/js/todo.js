@@ -51,7 +51,6 @@ export class TodoApp {
     $('.item-count__total .text').textContent = textType.total;
     $('.item-count__done .text').textContent = textType.done;
     // 아이템 리스트 보여주기
-    this.#clearItemList();
     this.#renderItemList();
     this.#updateItemLength();
   }
@@ -60,11 +59,13 @@ export class TodoApp {
     const todoListContainer = $('.item-list__container');
 
     if (todoListContainer) {
-      todoListContainer.innerHTML = ''; // 컨테이너의 내용을 모두 제거
+      todoListContainer.innerHTML = '';
     }
   }
 
   #renderItemList() {
+    this.#clearItemList();
+
     const items = this.#getCurrentItems();
 
     if (items.length > 0) {
@@ -196,11 +197,16 @@ export class TodoApp {
         this.toggleComplete(item.id);
       });
 
-    // TODO:  상태에 따른 처리 다르게
     newItem
       .querySelector('.button__component[data-type="deletion"]')
       .addEventListener('click', () => {
-        this.removeItem(item.id);
+        if (this.todoStatus === 'todo') {
+          this.removeItem(item.id);
+        } else {
+          this.todoItems.unshift(this.trash.rollbackItem(item.id));
+          this.#saveItemsToStorage();
+          this.#renderItemList();
+        }
       });
 
     this.container.insertAdjacentElement(position, newItem);
