@@ -204,6 +204,28 @@ export class TodoApp {
       newItem.classList.add('done');
     }
 
+    const editButton = newItem.querySelector(
+      '.button__component[data-type="editing"]'
+    );
+
+    if (editButton) {
+      editButton.addEventListener('click', () => {
+        const target = $(
+          `.task__component[data-key="${item.id}"] input[type="text"]`
+        );
+        const status = target.disabled ? 'edit' : 'noEdit';
+        target.disabled = status === 'noEdit' ? true : false;
+
+        if (status === 'edit') {
+          target.focus();
+        }
+
+        $(
+          `.task__component[data-key="${item.id}"] .button__component[data-type="editing"] > span`
+        ).textContent = status === 'edit' ? 'spellcheck' : 'edit_square';
+      });
+    }
+
     newItem
       .querySelector('input[type="checkbox"]')
       .addEventListener('change', () => {
@@ -262,6 +284,13 @@ export class TodoApp {
         <div class="input__component">
           <input type="text" disabled placeholder="텍스트를 입력하세요" value="${text}"/>
         </div>
+        ${
+          type === 'todo'
+            ? `<button class="button__component" data-type="editing">
+                <span class="material-symbols-outlined">edit_square</span>
+              </button>`
+            : '<div></div>'
+        }
         <button class="button__component" data-type="deletion">
           <span class="material-symbols-outlined">${
             type === 'todo' ? ' delete ' : 'redo'

@@ -9,6 +9,29 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
 
+  &[data-type='editing'] {
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 14;
+      color: var(--gray-500);
+    }
+
+    margin-top: 1px;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+
+    &:hover {
+      background-color: var(--gray-400);
+      .material-symbols-outlined {
+        color: var(--danger);
+      }
+    }
+  }
+
   &[data-type='deletion'] {
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 14;
