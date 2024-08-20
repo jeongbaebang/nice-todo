@@ -10,6 +10,17 @@ export class FormHandler {
     this.form = $('#todo-form');
     this.input = $('.input__component[data-type="creation"] > input');
     this.callback = onSubmit;
+
+    // 폼 제출 이벤트 리스너 등록
+    this.#initEventListeners();
+  }
+
+  #initEventListeners() {
+    if (!this.form) {
+      throw new Error('Invalid form');
+    }
+
+    this.form.addEventListener('submit', this.handler.bind(this));
   }
 
   /**
