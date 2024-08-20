@@ -112,6 +112,14 @@ class TodoApp {
     template.innerHTML = itemHTML.trim();
     const newItem = template.content.firstChild;
 
+    if (!newItem) {
+      throw new Error('Item not found');
+    }
+
+    if (item.completed) {
+      newItem.classList.add('done');
+    }
+
     newItem
       .querySelector('input[type="checkbox"]')
       .addEventListener('change', () => {
