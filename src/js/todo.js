@@ -64,8 +64,7 @@ export class TodoApp {
   }
 
   #renderItemList() {
-    const items =
-      this.todoStatus === 'todo' ? this.todoItems : this.trash.trashItems;
+    const items = this.#getCurrentItems();
 
     if (items.length > 0) {
       this.#toggleEmptyListState(false);
@@ -83,7 +82,7 @@ export class TodoApp {
     this.todoItems = storedTodoItems;
   }
 
-  #saveItemsToStorage(type = 'todoItems') {
+  #saveItemsToStorage() {
     localStorage.setItem('todoItems', JSON.stringify(this.todoItems));
   }
 
@@ -96,9 +95,7 @@ export class TodoApp {
       '.item-count__done > .count'
     );
 
-    const list =
-      this.todoStatus === 'todo' ? this.todoItems : this.trash.trashItems;
-
+    const list = this.#getCurrentItems();
     const totalLength = list.length;
     const todoLength = list.filter((item) => !item.completed).length;
     const doneLength = list.filter((item) => item.completed).length;
@@ -134,8 +131,8 @@ export class TodoApp {
     if (!id) {
       throw new Error('You must provide a valid ID.');
     }
-
-    const item = this.todoItems.find((item) => item.id === id);
+    const items = this.#getCurrentItems();
+    const item = items.find((item) => item.id === id);
 
     if (item) {
       item.completed = !item.completed;
@@ -164,6 +161,10 @@ export class TodoApp {
     this.#renderItem(item);
     this.updateItemLength();
     this.#saveItemsToStorage();
+  }
+
+  #getCurrentItems() {
+    return this.todoStatus === 'todo' ? this.todoItems : this.trash.trashItems;
   }
 
   /**
