@@ -28,13 +28,8 @@ export class Trash {
       this.#saveItemsToStorage('trashItems');
     }
   }
+
+  onClickButton(handler) {
+    this.button.addEventListener('click', handler);
+  }
 }
-
-// #changeTodoStatus() {
-//   const target = $('.button__component[data-type="garbage"');
-
-//   const statuses = ['todo', 'trash'];
-//   this.todoStatus = statuses.find((status) => status !== this.todoStatus);
-
-//   console.log(this.todoStatus);
-// }

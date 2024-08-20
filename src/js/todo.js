@@ -17,6 +17,27 @@ export class TodoApp {
     this.container = $('.item-list__container');
     this.#loadItemsFromStorage();
     this.#initRenderItem();
+    this.#initTrashButtonListeners();
+  }
+
+  #initTrashButtonListeners() {
+    if (!this.trash.button) {
+      throw new Error('Invalid trash button');
+    }
+
+    this.trash.button.addEventListener(
+      'click',
+      this.changeTodoStatus.bind(this)
+    );
+  }
+
+  changeTodoStatus() {
+    const statuses = ['todo', 'trash'];
+    const status = statuses.find((status) => status !== this.todoStatus);
+    const iconType = status === 'todo' ? ' edit_note ' : ' auto_delete ';
+
+    this.todoStatus = status;
+    $('.button__component[data-type="garbage"] > span').textContent = iconType;
   }
 
   #initRenderItem() {
