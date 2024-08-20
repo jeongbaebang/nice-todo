@@ -6,6 +6,7 @@ export class TodoApp {
    * @type {{ id: number, text: string, completed: boolean }[]}
    */
   todoItems = [];
+  trashItems = [];
 
   constructor() {
     this.container = $('.item-list__container');
@@ -21,12 +22,29 @@ export class TodoApp {
   }
 
   #loadItemsFromStorage() {
-    const storedItems = JSON.parse(localStorage.getItem('todoItems')) || [];
-    this.todoItems = storedItems;
+    const storedTodoItems = JSON.parse(localStorage.getItem('todoItems')) || [];
+    const storedTrashItems =
+      JSON.parse(localStorage.getItem('trashItems')) || [];
+
+    this.todoItems = storedTodoItems;
+    this.trashItems = storedTrashItems;
   }
 
-  #saveItemsToStorage() {
-    localStorage.setItem('todoItems', JSON.stringify(this.todoItems));
+  /**
+   * @param {"todoItems" | "trashItems"} type
+   * @param {{ id: number, text: string, completed: boolean }[]} payload
+   */
+  #saveItemsToStorage(type = 'todoItems') {
+    const payload = type === 'todoItems' ? this.todoItems : this.trashItems;
+
+    localStorage.setItem(type, JSON.stringify(payload));
+  }
+
+  #moveItemToTrash(item) {
+    if (item) {
+      this.trashItems.unshift(item);
+      this.#saveItemsToStorage('trashItems');
+    }
   }
 
   updateItemLength() {
@@ -53,7 +71,13 @@ export class TodoApp {
       throw new Error('You must provide a valid ID.');
     }
 
-    this.todoItems = this.todoItems.filter((item) => item.id !== id);
+    const index = this.todoItems.findIndex((item) => item.id === id);
+
+    if (index !== -1) {
+      this.#moveItemToTrash(this.todoItems[index]);
+      this.todoItems.splice(index, 1);
+    }
+
     const target = $(`.task__component[data-key="${id}"]`);
 
     if (target) {
