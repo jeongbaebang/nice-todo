@@ -25,6 +25,8 @@ class TodoApp {
 
     todoLengthText.textContent = todoLength;
     doneLengthText.textContent = `${doneLength}/${totalLength}`;
+
+    this.#toggleEmptyListState(totalLength <= 0);
   }
 
   removeItem(id) {
@@ -94,6 +96,19 @@ class TodoApp {
       });
 
     this.container.insertAdjacentElement('afterbegin', newItem);
+  }
+
+  #toggleEmptyListState(isEmpty) {
+    const containerEmptyList = $('.item-list__empty__container');
+    const containerList = $('.item-list__container');
+
+    if (isEmpty) {
+      containerEmptyList.style.display = 'flex';
+      containerList.style.display = 'none';
+    } else {
+      containerEmptyList.style.display = 'none';
+      containerList.style.display = 'flex';
+    }
   }
 
   /**
