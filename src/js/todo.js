@@ -53,6 +53,7 @@ export class TodoApp {
     // 아이템 리스트 보여주기
     this.#clearItemList();
     this.#renderItemList();
+    this.updateItemLength();
   }
 
   #clearItemList() {
@@ -71,9 +72,9 @@ export class TodoApp {
       items.forEach((item) =>
         this.#renderItem(item, 'beforeend', this.todoStatus)
       );
-
-      this.updateItemLength();
     }
+
+    this.updateItemLength();
   }
 
   #loadItemsFromStorage() {
