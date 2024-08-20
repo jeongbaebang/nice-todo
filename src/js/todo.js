@@ -34,10 +34,22 @@ export class TodoApp {
   changeTodoStatus() {
     const statuses = ['todo', 'trash'];
     const status = statuses.find((status) => status !== this.todoStatus);
-    const iconType = status === 'todo' ? ' edit_note ' : ' auto_delete ';
+    const iconType = status === 'todo' ? ' auto_delete ' : ' edit_note ';
 
     this.todoStatus = status;
+    // 삭제 상태일 경우 폼 입력 불가
+    const isDisabled = status === 'todo' ? false : true;
+    $('.input__component[data-type="creation"] input').disabled = isDisabled;
+    $('.button__component[data-type="creation"]').disabled = isDisabled;
+    // 아이콘 변경
     $('.button__component[data-type="garbage"] > span').textContent = iconType;
+    // 텍스트 변경
+    const textType =
+      status === 'todo'
+        ? { total: '나의 할 일 목록', done: '완료된 목록' }
+        : { total: '삭제된 할 일 목록', done: '삭제처리된 완료 목록' };
+    $('.item-count__total .text').textContent = textType.total;
+    $('.item-count__done .text').textContent = textType.done;
   }
 
   #initRenderItem() {
