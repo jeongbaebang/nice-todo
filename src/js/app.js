@@ -3,8 +3,28 @@ import { $ } from './utils';
 
 class TodoApp {
   constructor() {
+    /**
+     * @type {{ id: number, text: string, completed: boolean }[]}
+     */
     this.todoItems = [];
     this.container = $('.item-list__container');
+  }
+
+  updateItemLength() {
+    const container = $('.item-count__container');
+    const todoLengthText = container.querySelector(
+      '.item-count__total > .count'
+    );
+    const doneLengthText = container.querySelector(
+      '.item-count__done > .count'
+    );
+
+    const totalLength = this.todoItems.length;
+    const todoLength = this.todoItems.filter((item) => !item.completed).length;
+    const doneLength = this.todoItems.filter((item) => item.completed).length;
+
+    todoLengthText.textContent = todoLength;
+    doneLengthText.textContent = `${doneLength}/${totalLength}`;
   }
 
   removeItem(id) {
@@ -17,6 +37,7 @@ class TodoApp {
 
     if (target) {
       target.remove();
+      this.updateItemLength();
     }
   }
 
@@ -34,6 +55,7 @@ class TodoApp {
       );
 
       target.classList.toggle('done', item.completed);
+      this.updateItemLength();
     }
   }
 
@@ -50,6 +72,7 @@ class TodoApp {
 
     this.todoItems.unshift(item);
     this.#renderItem(item);
+    this.updateItemLength();
   }
 
   #renderItem(item) {
