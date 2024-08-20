@@ -18,7 +18,7 @@ class TodoApp {
       completed: false,
     };
 
-    this.todoItems.push(item);
+    this.todoItems.unshift(item);
     this.#renderItem(item);
   }
 
