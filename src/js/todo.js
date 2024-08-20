@@ -18,6 +18,9 @@ export class TodoApp {
     this.#loadItemsFromStorage();
     this.#renderItemList();
     this.#initTrashButtonListeners();
+
+    // temp string
+    this.temp = '';
   }
 
   #initTrashButtonListeners() {
@@ -218,6 +221,21 @@ export class TodoApp {
 
         if (status === 'edit') {
           target.focus();
+
+          this.temp = target.value;
+        }
+
+        // 아이템 수정 유효성 검사
+        if (!this.#checkValue(target.value)) {
+          target.value = this.temp;
+          this.temp = '';
+        } else {
+          const index = this.todoItems.findIndex(({ id }) => item.id === id);
+
+          if (index !== -1) {
+            this.todoItems[index].text = target.value;
+            this.#saveItemsToStorage();
+          }
         }
 
         $(
@@ -245,6 +263,19 @@ export class TodoApp {
       });
 
     this.container.insertAdjacentElement(position, newItem);
+  }
+
+  /**
+   * @param {string} value
+   */
+  #checkValue(value) {
+    if (value === '') {
+      window.alert('빈 문자열은 불가능합니다.');
+
+      return null;
+    }
+
+    return value;
   }
 
   #toggleEmptyListState(isEmpty) {
