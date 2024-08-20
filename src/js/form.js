@@ -4,10 +4,12 @@ export class FormHandler {
   /**
    * @type {?string}
    */
-  #value = null;
+  #key = 0;
 
   constructor() {
     this.form = $('#todo-form');
+    this.input = $('.input__component[data-type="creation"] > input');
+    this.parentElement = $('.item-list__container');
   }
 
   #checkValue(value) {
@@ -20,22 +22,55 @@ export class FormHandler {
     return value;
   }
 
+  #clearValue() {
+    this.input.value = '';
+  }
+
   /**
    * @param {Event} event
    */
   handler(event) {
     event.preventDefault();
 
-    const input = $('.input__component[data-type="creation"] > input');
-
-    if (!input) {
+    if (!this.input) {
       throw new Error('Invalid input');
     }
 
-    this.#value = this.#checkValue(input.value);
+    const value = this.#checkValue(this.input.value);
+
+    if (value) {
+      this.renderItem(value);
+    }
   }
 
-  getValue() {
-    return this.#value;
+  generateItem(value) {
+    return `
+      <div class="task__component" data-key="${this.#key}">
+        <div class="checkbox__component">
+          <label>
+            <input type="checkbox" />
+          </label>
+        </div>
+        <div class="input__component">
+          <input type="text" disabled placeholder="텍스트를 입력하세요" value="${value}"/>
+        </div>
+        <button class="button__component" data-type="deletion">
+          <span class="material-symbols-outlined"> delete </span>
+        </button>
+      </div>
+    `;
+  }
+
+  renderItem(value) {
+    const itemHTML = this.generateItem(value);
+    // 템플릿 요소를 사용하여 HTML 문자열을 DOM 요소로 변환
+    const template = document.createElement('template');
+    template.innerHTML = itemHTML.trim(); // 공백 제거
+    const newItem = template.content.firstChild;
+
+    this.parentElement.insertAdjacentElement('afterbegin', newItem);
+    this.#key++;
+
+    this.#clearValue();
   }
 }
