@@ -1,16 +1,19 @@
 import { Trash } from './trash';
+import { Payload } from './type';
 import { $ } from './utils';
+
+type Status = 'todo' | 'trash';
+type Position = 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend';
 
 export class TodoApp {
   /**
-   * @type {"todo" | "trash"}
-   */
-  todoStatus = 'todo';
-
-  /**
    * @type {{ id: number, text: string, completed: boolean }[]}
    */
-  todoItems = [];
+  todoItems: Payload[] = [];
+  trash: Trash;
+  container: Element;
+  temp: string;
+  todoStatus: Status = 'todo';
 
   constructor() {
     this.trash = new Trash();
@@ -35,15 +38,19 @@ export class TodoApp {
   }
 
   changeTodoStatus() {
-    const statuses = ['todo', 'trash'];
+    const statuses: Status[] = ['todo', 'trash'];
     const status = statuses.find((status) => status !== this.todoStatus);
     const iconType = status === 'todo' ? ' auto_delete ' : ' edit_note ';
 
-    this.todoStatus = status;
+    this.todoStatus = status || 'todo';
     // 삭제 상태일 경우 폼 입력 불가
     const isDisabled = status === 'todo' ? false : true;
-    $('.input__component[data-type="creation"] input').disabled = isDisabled;
-    $('.button__component[data-type="creation"]').disabled = isDisabled;
+    (
+      $('.input__component[data-type="creation"] input') as HTMLInputElement
+    ).disabled = isDisabled;
+    (
+      $('.button__component[data-type="creation"]') as HTMLInputElement
+    ).disabled = isDisabled;
     // 아이콘 변경
     $('.button__component[data-type="garbage"] > span').textContent = iconType;
     // 텍스트 변경
@@ -95,7 +102,8 @@ export class TodoApp {
   }
 
   #loadItemsFromStorage() {
-    const storedTodoItems = JSON.parse(localStorage.getItem('todoItems')) || [];
+    const storedTodoItems =
+      JSON.parse(localStorage.getItem('todoItems')!) || [];
 
     this.todoItems = storedTodoItems;
   }
@@ -118,13 +126,13 @@ export class TodoApp {
     const todoLength = list.filter((item) => !item.completed).length;
     const doneLength = list.filter((item) => item.completed).length;
 
-    todoLengthText.textContent = todoLength;
-    doneLengthText.textContent = `${doneLength}/${totalLength}`;
+    todoLengthText!.textContent = `${todoLength}`;
+    doneLengthText!.textContent = `${doneLength}/${totalLength}`;
 
     this.#toggleEmptyListState(totalLength <= 0);
   }
 
-  removeItem(id) {
+  removeItem(id: number) {
     if (!id) {
       throw new Error('You must provide a valid ID.');
     }
@@ -145,7 +153,7 @@ export class TodoApp {
     }
   }
 
-  toggleComplete(id) {
+  toggleComplete(id: number) {
     if (!id) {
       throw new Error('You must provide a valid ID.');
     }
@@ -158,13 +166,13 @@ export class TodoApp {
         `.task__component[data-key="${id}"]`
       );
 
-      target.classList.toggle('done', item.completed);
+      target!.classList.toggle('done', item.completed);
       this.#updateItemLength();
       this.#saveItemsToStorage();
     }
   }
 
-  addItem(value) {
+  addItem(value: unknown) {
     if (typeof value !== 'string' || value === '') {
       throw new Error('Make sure you pass the correct string.');
     }
@@ -188,16 +196,16 @@ export class TodoApp {
   /**
    * @param {Object} item
    * @param {number} item.id
-   * @param {number} item.text
-   * @param {number} item.completed
+   * @param {string} item.text
+   * @param {boolean} item.completed
    * @param {"afterbegin" | "afterend" | "beforebegin" | "beforeend"} position
    * @param {"todo" | "trash"} type
    */
-  #renderItem(item, position = 'afterbegin', type = 'todo') {
+  #renderItem(item: Payload, position: Position = 'afterbegin', type = 'todo') {
     const itemHTML = this.#generateItem(item, type);
     const template = document.createElement('template');
     template.innerHTML = itemHTML.trim();
-    const newItem = template.content.firstChild;
+    const newItem = template.content.firstChild as Element;
 
     if (!newItem) {
       throw new Error('Item not found');
@@ -215,7 +223,7 @@ export class TodoApp {
       editButton.addEventListener('click', () => {
         const target = $(
           `.task__component[data-key="${item.id}"] input[type="text"]`
-        );
+        ) as HTMLInputElement;
         const status = target.disabled ? 'edit' : 'noEdit';
         target.disabled = status === 'noEdit' ? true : false;
 
@@ -245,13 +253,13 @@ export class TodoApp {
     }
 
     newItem
-      .querySelector('input[type="checkbox"]')
+      .querySelector('input[type="checkbox"]')!
       .addEventListener('change', () => {
         this.toggleComplete(item.id);
       });
 
     newItem
-      .querySelector('.button__component[data-type="deletion"]')
+      .querySelector('.button__component[data-type="deletion"]')!
       .addEventListener('click', () => {
         if (this.todoStatus === 'todo') {
           this.removeItem(item.id);
@@ -268,7 +276,7 @@ export class TodoApp {
   /**
    * @param {string} value
    */
-  #checkValue(value) {
+  #checkValue(value: string) {
     if (value === '') {
       window.alert('빈 문자열은 불가능합니다.');
 
@@ -278,9 +286,11 @@ export class TodoApp {
     return value;
   }
 
-  #toggleEmptyListState(isEmpty) {
-    const containerEmptyList = $('.item-list__empty__container');
-    const containerList = $('.item-list__container');
+  #toggleEmptyListState(isEmpty: boolean) {
+    const containerEmptyList = $(
+      '.item-list__empty__container'
+    ) as HTMLDivElement;
+    const containerList = $('.item-list__container') as HTMLDivElement;
 
     if (isEmpty) {
       containerEmptyList.style.display = 'flex';
@@ -294,11 +304,11 @@ export class TodoApp {
   /**
    * @param {Object} item
    * @param {number} item.id
-   * @param {number} item.text
-   * @param {number} item.completed
+   * @param {string} item.text
+   * @param {boolean} item.completed
    * @param {"todo" | "trash"} type
    */
-  #generateItem(item, type = 'todo') {
+  #generateItem(item: Payload, type = 'todo') {
     if (!item?.id || !item?.text) {
       throw new Error('You must provide valid attributes.');
     }

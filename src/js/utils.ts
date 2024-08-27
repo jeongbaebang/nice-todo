@@ -1,9 +1,4 @@
-/**
- *
- * @param {?string} tag
- * @returns {Element}
- */
-export const $ = (tag) => {
+export const $ = (tag: unknown) => {
   if (typeof tag !== 'string' || tag === '') {
     throw new TypeError('It must be a valid tag name.');
   }

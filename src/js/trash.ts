@@ -1,20 +1,23 @@
-import { Theme } from './theme';
+import { Payload } from './type';
 import { $ } from './utils';
 
 export class Trash {
   /**
    * @type {{ id: number, text: string, completed: boolean }[]}
    */
-  trashItems = [];
+  trashItems: Payload[] = [];
+  button: HTMLButtonElement;
 
   constructor() {
-    this.button = $('.button__component[data-type="garbage"]');
+    this.button = $(
+      '.button__component[data-type="garbage"]'
+    ) as HTMLButtonElement;
     this.#loadItemsFromStorage();
   }
 
   #loadItemsFromStorage() {
     const storedTrashItems =
-      JSON.parse(localStorage.getItem('trashItems')) || [];
+      JSON.parse(localStorage.getItem('trashItems')!) || [];
 
     this.trashItems = storedTrashItems;
   }
@@ -23,14 +26,14 @@ export class Trash {
     localStorage.setItem('trashItems', JSON.stringify(this.trashItems));
   }
 
-  moveItemToTrash(item) {
+  moveItemToTrash(item: Payload) {
     if (item) {
       this.trashItems.unshift(item);
-      this.#saveItemsToStorage('trashItems');
+      this.#saveItemsToStorage();
     }
   }
 
-  rollbackItem(id) {
+  rollbackItem(id: number) {
     if (!id) {
       throw new Error('You must provide a valid ID.');
     }

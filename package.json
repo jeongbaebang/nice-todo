@@ -1,16 +1,21 @@
 {
   "name": "todo",
   "version": "1.0.0",
+  "source": "src/index.html",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "start": "npx parcel src/index.html",
-    "build": "parcel build src/index.html --public-url ./ "
+    "dev": "npx parcel src/index.html",
+    "check": "tsc --noEmit",
+    "build": "npx parcel build src/index.html --public-url ./ "
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
     "@parcel/transformer-sass": "^2.12.0",
-    "parcel": "^2.12.0"
+    "parcel": "^2.12.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
   },
   "dependencies": {
     "normalize.css": "^8.0.1"
