@@ -1,6 +1,9 @@
 import { Payload } from './type';
 import { $ } from './utils';
 
+/**
+ * 삭제된 아이템 항목을 관리하는 클래스
+ */
 export class Trash {
   /**
    * @type {{ id: number, text: string, completed: boolean }[]}

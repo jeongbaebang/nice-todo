@@ -2,6 +2,9 @@ import { $ } from './utils';
 
 type CallBack = (arg: string) => void;
 
+/**
+ * 입력 폼 담당 클래스
+ */
 export class FormHandler {
   form: Element;
   input: HTMLInputElement;

@@ -1,5 +1,8 @@
 import { $ } from './utils';
 
+/**
+ * 다크/라이트 테마 담당 클래스
+ */
 export class Theme {
   constructor() {
     this.#addThemeEvent();
